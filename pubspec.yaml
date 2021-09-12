@@ -11,10 +11,21 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Architecture
+  flutter_bloc: ^7.2.0
+
+  # Code quality
+  meta: ^1.7.0
+  equatable: ^2.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # Linter
   flutter_lints: ^1.0.4
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/config.json
