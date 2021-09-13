@@ -36,8 +36,10 @@ class HomeScreen extends StatelessWidget {
           }
         },
         child: SafeArea(
-          minimum: const EdgeInsets.all(8.0),
-          child: Column(
+          minimum: const EdgeInsets.all(16.0),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
             children: [
               TextField(
                 autofocus: true,
@@ -73,6 +75,7 @@ class _HomeScreenBody extends StatelessWidget {
         }
         return ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: state.data.length,
           itemBuilder: (BuildContext listViewContext, int index) => ListTile(
             title: Text(state.data[index].term ?? ''),
@@ -80,7 +83,7 @@ class _HomeScreenBody extends StatelessWidget {
               'Frequency: ${state.data[index].frequency}',
             ),
             trailing: Text(
-              "${(state.data[index].similarity ?? 0.0) * 100}%",
+              "${state.data[index].similarity ?? 0}%",
             ),
           ),
         );

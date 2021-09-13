@@ -16,6 +16,7 @@ class QueryCubit extends Cubit<QueryState> {
       final data = await repository.fetchQueries(language, query);
       emit(state.copyWith(newData: data.toList()));
     } on Exception catch (exception) {
+      print(exception);
       emit(state.copyWith(newException: exception));
     }
   }

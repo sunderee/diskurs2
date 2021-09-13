@@ -20,13 +20,15 @@ class ApiProvider {
   ) async {
     final request = await _client.postUrl(Uri.https(host, endpoint))
       ..headers.contentType = ContentType.json
-      ..write(body);
+      ..write(json.encode(body));
     final result = await request.close();
+
+    final rawBody = await result
+        .transform(const Utf8Decoder(allowMalformed: true))
+        .reduce((accumulator, element) => accumulator + element);
     return ResultModel(
       result.statusCode,
-      await result
-          .transform(const Utf8Decoder(allowMalformed: true))
-          .reduce((accumulator, element) => accumulator + element),
+      rawBody,
     );
   }
 }

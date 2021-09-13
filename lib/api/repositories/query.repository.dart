@@ -9,6 +9,37 @@ import 'package:diskursv2/utils/constants/config.const.dart';
 import 'package:diskursv2/utils/types.dart';
 import 'package:flutter/foundation.dart';
 
+Future<List<QueryModel>> _fetchQueriesIsolate(
+  RequestModel requestModel,
+) async {
+  final ApiProvider _apiProvider = ApiProvider.instance;
+
+  if (requestModel.query.isEmpty) {
+    throw const ApiException('Empty query is not allowed');
+  }
+
+  final result = await _apiProvider.makePostRequest(
+    host,
+    queryEndpoint,
+    {
+      'q': requestModel.query,
+      'lang': requestModel.language.language,
+    },
+  );
+  if (result.statusCode != 200) {
+    throw ApiException(
+      'API error',
+      statusCode: result.statusCode,
+      rawBody: result.body,
+    );
+  }
+
+  return ((json.decode(result.body) as JSON)['result']['sims'] as List<dynamic>)
+      .cast<JSON>()
+      .map((JSON json) => QueryModel.fromJson(json))
+      .toList();
+}
+
 abstract class _IQueryRepository {
   Future<Iterable<QueryModel>> fetchQueries(
     LanguageEnum language,
@@ -17,38 +48,6 @@ abstract class _IQueryRepository {
 }
 
 class QueryRepository implements _IQueryRepository {
-  static Future<Iterable<QueryModel>> _fetchQueriesIsolate(
-    RequestModel requestModel,
-  ) async {
-    final ApiProvider _apiProvider = ApiProvider.instance;
-
-    if (requestModel.query.isEmpty) {
-      throw const ApiException('Empty query is not allowed');
-    }
-
-    final result = await _apiProvider.makePostRequest(
-      host,
-      queryEndpoint,
-      {
-        'q': requestModel.query,
-        'lang': requestModel.language.language,
-      },
-    );
-    if (result.statusCode != 200) {
-      throw ApiException(
-        'API error',
-        statusCode: result.statusCode,
-        rawBody: result.body,
-      );
-    }
-
-    return ((json.decode(result.body) as JSON)['result']['sims']
-                as List<dynamic>?)
-            ?.cast<JSON>()
-            .map((JSON json) => QueryModel.fromJson(json)) ??
-        const Iterable.empty();
-  }
-
   @override
   Future<Iterable<QueryModel>> fetchQueries(
     LanguageEnum language,
