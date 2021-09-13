@@ -8,9 +8,6 @@ abstract class CorpusState extends Equatable {
   const CorpusState._();
 
   @protected
-  const factory CorpusState.initial() = InitialState;
-
-  @protected
   const factory CorpusState.loading() = LoadingState;
 
   @protected
@@ -18,13 +15,6 @@ abstract class CorpusState extends Equatable {
 
   @protected
   const factory CorpusState.failure(BlocException exception) = FailedState;
-}
-
-class InitialState extends CorpusState {
-  const InitialState() : super._();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class LoadingState extends CorpusState {

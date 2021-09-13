@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-
-typedef JSON = Map<String, dynamic>;
+import 'package:diskursv2/utils/types.dart';
 
 @immutable
 class QueryModel extends Equatable {
@@ -10,14 +9,10 @@ class QueryModel extends Equatable {
   final double? frequency;
 
   const QueryModel._(this.term, this.similarity, this.frequency);
-  factory QueryModel.fromJson(
-    JSON json, {
-    bool isSlovene = true,
-  }) =>
-      QueryModel._(
+  factory QueryModel.fromJson(JSON json) => QueryModel._(
         json['term'],
-        isSlovene ? json['prob'] / 100 : json['freq'],
-        isSlovene ? json['avg'] / 100 : json['avg'],
+        json['freq'] != null ? (json['freq'] as double) * 100 : json['prob'],
+        json['avg'],
       );
 
   @override

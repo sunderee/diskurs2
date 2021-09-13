@@ -1,3 +1,2 @@
-export './query.bloc.dart';
-export './query.event.dart';
+export './query.cubit.dart';
 export './query.state.dart';

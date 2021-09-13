@@ -47,4 +47,4 @@ app.*.map.json
 *.lock
 
 # Config
-config.json
+config.const.dart

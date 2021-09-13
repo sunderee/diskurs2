@@ -5,7 +5,8 @@ import 'package:diskursv2/api/api.provider.dart';
 import 'package:diskursv2/api/models/query.model.dart';
 import 'package:diskursv2/api/models/request.model.dart';
 import 'package:diskursv2/api/repositories/language.enum.dart';
-import 'package:diskursv2/utils/helpers/config.helper.dart';
+import 'package:diskursv2/utils/constants/config.const.dart';
+import 'package:diskursv2/utils/types.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class _IQueryRepository {
@@ -20,17 +21,18 @@ class QueryRepository implements _IQueryRepository {
     RequestModel requestModel,
   ) async {
     final ApiProvider _apiProvider = ApiProvider.instance;
-    final Future<ConfigProvider> _configProvider = ConfigProvider.instance;
 
     if (requestModel.query.isEmpty) {
       throw const ApiException('Empty query is not allowed');
     }
 
-    final config = (await _configProvider).getConfigInstance();
     final result = await _apiProvider.makePostRequest(
-      config.host,
-      config.queryEndpoint,
-      {'q': requestModel.query, 'lang': requestModel.language.language},
+      host,
+      queryEndpoint,
+      {
+        'q': requestModel.query,
+        'lang': requestModel.language.language,
+      },
     );
     if (result.statusCode != 200) {
       throw ApiException(
@@ -42,7 +44,7 @@ class QueryRepository implements _IQueryRepository {
 
     return ((json.decode(result.body) as JSON)['result']['sims']
                 as List<dynamic>?)
-            ?.cast<Map<String, dynamic>>()
+            ?.cast<JSON>()
             .map((JSON json) => QueryModel.fromJson(json)) ??
         const Iterable.empty();
   }

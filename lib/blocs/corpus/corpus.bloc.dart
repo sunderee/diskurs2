@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CorpusBloc extends Bloc<CorpusEvent, CorpusState> {
   final queryRepository = CorpusRepository();
 
-  CorpusBloc() : super(const CorpusState.initial());
+  CorpusBloc() : super(const CorpusState.loading());
 
   @override
   Stream<CorpusState> mapEventToState(CorpusEvent event) async* {
