@@ -1,0 +1,12 @@
+{
+  "corpus_lookup": "Pretraživanje korpusa",
+  "@corpus_lookup": {},
+  "empty_queries_error": "Nisu dopušteni prazni upiti",
+  "@empty_queries_error": {},
+  "frequency": "Frekvencija",
+  "@frequency": {},
+  "input_hint": "Unos",
+  "@input_hint": {},
+  "lang_change": "Jezik je promijenjen",
+  "@lang_change": {}
+}

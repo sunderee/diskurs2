@@ -26,11 +26,7 @@ Future<List<String>> _retrieveCorpusEntriesIsolate(
     },
   );
   if (result.statusCode != 200) {
-    throw ApiException(
-      'API error',
-      statusCode: result.statusCode,
-      rawBody: result.body,
-    );
+    throw const ApiException('API error');
   }
 
   return ((json.decode(result.body) as JSON)['result'] as List<dynamic>)

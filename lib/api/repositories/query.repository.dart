@@ -27,11 +27,7 @@ Future<List<QueryModel>> _fetchQueriesIsolate(
     },
   );
   if (result.statusCode != 200) {
-    throw ApiException(
-      'API error',
-      statusCode: result.statusCode,
-      rawBody: result.body,
-    );
+    throw const ApiException('API error');
   }
 
   return ((json.decode(result.body) as JSON)['result']['sims'] as List<dynamic>)

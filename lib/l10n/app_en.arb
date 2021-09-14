@@ -1,0 +1,12 @@
+{
+  "corpus_lookup": "Corpus lookup",
+  "@corpus_lookup": {},
+  "empty_queries_error": "No empty queries are allowed",
+  "@empty_queries_error": {},
+  "frequency": "Frequency",
+  "@frequency": {},
+  "input_hint": "Input",
+  "@input_hint": {},
+  "lang_change": "Language changed",
+  "@lang_change": {}
+}

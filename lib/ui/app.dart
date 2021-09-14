@@ -1,7 +1,10 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:diskursv2/ui/screens/home.screen.dart';
 import 'package:diskursv2/utils/constants/color.const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -23,6 +26,8 @@ class App extends StatelessWidget {
         ),
         primaryColor: colorBrand,
       ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const HomeScreen(),
     );
   }

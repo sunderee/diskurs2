@@ -1,8 +1,9 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:diskursv2/api/repositories/language.enum.dart';
 import 'package:diskursv2/blocs/query/query.dart';
 import 'package:diskursv2/ui/screens/corpus.screen.dart';
 import 'package:diskursv2/ui/widgets/language_picker.widget.dart';
-import 'package:diskursv2/ui/widgets/menu_picker.widget.dart';
 import 'package:diskursv2/utils/constants/color.const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,15 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Language changed to ${newLanguage.longLanguage}',
+                    '${AppLocalizations.of(context)?.lang_change}',
                   ),
                 ),
               );
               setState(() => _currentLanguage = newLanguage);
             },
-          ),
-          MenuPickerWidget(
-            onMenuItemClickListener: (int menuID) {},
           ),
         ],
         bottom: _displayLoadingIndicator
@@ -92,13 +90,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: colorBrand),
                   ),
-                  hintText: 'Input (${_currentLanguage.longLanguage})',
+                  hintText:
+                      '${AppLocalizations.of(context)?.input_hint} (${_currentLanguage.longLanguage})',
                 ),
                 onSubmitted: (String query) {
                   if (query.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('No empty queries are allowed'),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)?.empty_queries_error ??
+                              '',
+                        ),
                       ),
                     );
                     return;
@@ -114,7 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: MaterialButton(
                   color: colorBrand,
                   child: Text(
-                    'Corpus lookup'.toUpperCase(),
+                    AppLocalizations.of(context)?.corpus_lookup.toUpperCase() ??
+                        '',
                     style: const TextStyle(
                       color: Colors.white,
                     ),
@@ -122,8 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     if (_inputController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('No empty queries are allowed'),
+                        SnackBar(
+                          content: Text(
+                            AppLocalizations.of(context)?.empty_queries_error ??
+                                '',
+                          ),
                         ),
                       );
                       return;
@@ -173,11 +179,8 @@ class _HomeScreenBody extends StatelessWidget {
           itemBuilder: (BuildContext listViewContext, int index) => ListTile(
             title: Text(state.data[index].term ?? ''),
             subtitle: Text(
-              'Frequency: ${state.data[index].frequency}',
-            ),
-            trailing: Text(
-              "${state.data[index].similarity ?? 0}%",
-            ),
+                '${AppLocalizations.of(context)?.frequency}: ${state.data[index].frequency}'),
+            trailing: Text('${state.data[index].similarity ?? 0}%'),
           ),
         );
       },
