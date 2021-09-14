@@ -6,10 +6,23 @@ import 'package:diskursv2/utils/constants/color.const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
 
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late bool _displayLoadingIndicator;
+
+  @override
+  void initState() {
+    super.initState();
+    _displayLoadingIndicator = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +35,21 @@ class HomeScreen extends StatelessWidget {
           ),
           MenuPickerWidget(
             onMenuItemClickListener: (int menuID) {},
-          )
+          ),
         ],
+        bottom: _displayLoadingIndicator
+            ? const PreferredSize(
+                child: LinearProgressIndicator(
+                  color: colorBrand,
+                  backgroundColor: Colors.white,
+                ),
+                preferredSize: Size.fromHeight(2.0),
+              )
+            : null,
       ),
       body: BlocListener<QueryCubit, QueryState>(
         listener: (BuildContext context, QueryState state) {
+          setState(() => _displayLoadingIndicator = state.isLoading);
           if (state.exception != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -56,7 +79,22 @@ class HomeScreen extends StatelessWidget {
                       );
                 },
               ),
-              _HomeScreenBody(),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: MaterialButton(
+                  color: colorBrand,
+                  child: Text(
+                    'Corpus lookup'.toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+              _HomeScreenBody(
+                renderIsLoading: (bool isLoading) {},
+              ),
             ],
           ),
         ),
@@ -66,6 +104,13 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _HomeScreenBody extends StatelessWidget {
+  final Function(bool) renderIsLoading;
+
+  const _HomeScreenBody({
+    Key? key,
+    required this.renderIsLoading,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QueryCubit, QueryState>(

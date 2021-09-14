@@ -12,11 +12,26 @@ class QueryCubit extends Cubit<QueryState> {
     LanguageEnum language,
     String query,
   ) async {
+    emit(
+      state.copyWith(
+        newIsLoading: true,
+      ),
+    );
     try {
       final data = await _repository.fetchQueries(language, query);
-      emit(state.copyWith(newData: data.toList()));
+      emit(
+        state.copyWith(
+          newData: data.toList(),
+          newIsLoading: false,
+        ),
+      );
     } on Exception catch (exception) {
-      emit(state.copyWith(newException: exception));
+      emit(
+        state.copyWith(
+          newException: exception,
+          newIsLoading: false,
+        ),
+      );
     }
   }
 }
