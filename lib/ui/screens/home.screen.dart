@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Language changed to ${newLanguage.language}',
+                    'Language changed to ${newLanguage.longLanguage}',
                   ),
                 ),
               );
@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   setState(() => _currentQuery = query);
                   context.read<QueryCubit>().requestQueries(
-                        LanguageEnum.slovene,
+                        _currentLanguage,
                         query,
                       );
                 },

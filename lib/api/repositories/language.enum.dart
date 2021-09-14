@@ -11,4 +11,15 @@ extension LanguageEnumValues on LanguageEnum {
         return 'sr';
     }
   }
+
+  String get longLanguage {
+    switch (this) {
+      case LanguageEnum.slovene:
+        return 'Slovene';
+      case LanguageEnum.croatian:
+        return 'Croatian';
+      case LanguageEnum.serbian:
+        return 'Serbian';
+    }
+  }
 }
