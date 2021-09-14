@@ -1,5 +1,6 @@
 import 'package:diskursv2/api/repositories/language.enum.dart';
 import 'package:diskursv2/blocs/query/query.dart';
+import 'package:diskursv2/ui/screens/corpus.screen.dart';
 import 'package:diskursv2/ui/widgets/language_picker.widget.dart';
 import 'package:diskursv2/ui/widgets/menu_picker.widget.dart';
 import 'package:diskursv2/utils/constants/color.const.dart';
@@ -16,6 +17,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String _currentQuery = '';
+  LanguageEnum _currentLanguage = LanguageEnum.slovene;
+
   late bool _displayLoadingIndicator;
 
   @override
@@ -31,7 +35,17 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Diskurs'),
         actions: [
           LanguagePickerWidget(
-            onLanguagePicked: (LanguageEnum newLanguage) {},
+            currentLanguage: _currentLanguage,
+            onLanguagePicked: (LanguageEnum newLanguage) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Language changed to ${newLanguage.language}',
+                  ),
+                ),
+              );
+              setState(() => _currentLanguage = newLanguage);
+            },
           ),
           MenuPickerWidget(
             onMenuItemClickListener: (int menuID) {},
@@ -73,6 +87,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   hintText: 'Input',
                 ),
                 onSubmitted: (String query) {
+                  if (query.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('No empty queries are allowed'),
+                      ),
+                    );
+                    return;
+                  }
+                  setState(() => _currentQuery = query);
                   context.read<QueryCubit>().requestQueries(
                         LanguageEnum.slovene,
                         query,
@@ -89,7 +112,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_currentQuery.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No empty queries are allowed'),
+                        ),
+                      );
+                      return;
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => CorpusScreen(
+                          language: _currentLanguage,
+                          query: _currentQuery,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               _HomeScreenBody(
