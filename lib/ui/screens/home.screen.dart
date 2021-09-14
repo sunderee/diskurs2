@@ -17,7 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _currentQuery = '';
+  final _inputController = TextEditingController();
+
   LanguageEnum _currentLanguage = LanguageEnum.slovene;
 
   late bool _displayLoadingIndicator;
@@ -26,6 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _displayLoadingIndicator = false;
+  }
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    super.dispose();
   }
 
   @override
@@ -79,12 +86,13 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.zero,
             children: [
               TextField(
+                controller: _inputController,
                 autofocus: true,
-                decoration: const InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
+                decoration: InputDecoration(
+                  focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: colorBrand),
                   ),
-                  hintText: 'Input',
+                  hintText: 'Input (${_currentLanguage.longLanguage})',
                 ),
                 onSubmitted: (String query) {
                   if (query.isEmpty) {
@@ -95,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                     return;
                   }
-                  setState(() => _currentQuery = query);
                   context.read<QueryCubit>().requestQueries(
                         _currentLanguage,
                         query,
@@ -113,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onPressed: () {
-                    if (_currentQuery.isEmpty) {
+                    if (_inputController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('No empty queries are allowed'),
@@ -126,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(
                         builder: (BuildContext context) => CorpusScreen(
                           language: _currentLanguage,
-                          query: _currentQuery,
+                          query: _inputController.text,
                         ),
                       ),
                     );

@@ -38,13 +38,16 @@ class CorpusScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return ListView.builder(
-                  itemCount: state.data.length,
-                  itemBuilder: (BuildContext context, int index) => ListTile(
-                    leading: const Icon(Icons.format_quote),
-                    title: Text(
-                      _removeHtmlTags(state.data[index]),
-                      style: Typography.material2018().englishLike.bodyText1,
+                return SafeArea(
+                  minimum: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: ListView.builder(
+                    itemCount: state.data.length,
+                    itemBuilder: (BuildContext context, int index) => ListTile(
+                      leading: const Icon(Icons.format_quote),
+                      title: Text(
+                        _removeHtmlTags(state.data[index]),
+                        style: Typography.material2018().englishLike.bodyText1,
+                      ),
                     ),
                   ),
                 );
