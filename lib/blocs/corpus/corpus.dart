@@ -1,3 +1,2 @@
-export './corpus.bloc.dart';
-export './corpus.event.dart';
+export 'corpus.cubit.dart';
 export './corpus.state.dart';

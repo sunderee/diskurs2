@@ -4,19 +4,18 @@ import 'package:diskursv2/blocs/query/query.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QueryCubit extends Cubit<QueryState> {
-  final QueryRepository repository;
+  final QueryRepository _repository;
 
-  QueryCubit(this.repository) : super(const QueryState());
+  QueryCubit(this._repository) : super(const QueryState());
 
   Future<void> requestQueries(
     LanguageEnum language,
     String query,
   ) async {
     try {
-      final data = await repository.fetchQueries(language, query);
+      final data = await _repository.fetchQueries(language, query);
       emit(state.copyWith(newData: data.toList()));
     } on Exception catch (exception) {
-      print(exception);
       emit(state.copyWith(newException: exception));
     }
   }

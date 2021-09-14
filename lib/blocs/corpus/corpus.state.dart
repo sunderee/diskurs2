@@ -1,43 +1,27 @@
-import 'package:diskursv2/blocs/bloc.exception.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-@sealed
-abstract class CorpusState extends Equatable {
-  const CorpusState._();
+@immutable
+class CorpusState extends Equatable {
+  final List<String> data;
+  final Exception? exception;
 
-  @protected
-  const factory CorpusState.loading() = LoadingState;
+  const CorpusState({
+    this.data = const <String>[],
+    this.exception,
+  });
 
-  @protected
-  const factory CorpusState.success(List<String> data) = SuccessfulState;
-
-  @protected
-  const factory CorpusState.failure(BlocException exception) = FailedState;
-}
-
-class LoadingState extends CorpusState {
-  const LoadingState() : super._();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class SuccessfulState extends CorpusState {
-  final List<String> corpusData;
-
-  const SuccessfulState(this.corpusData) : super._();
+  @doNotStore
+  CorpusState copyWith({
+    List<String>? newData,
+    Exception? newException,
+  }) =>
+      CorpusState(
+        data: newData ?? data,
+        exception: newException,
+      );
 
   @override
-  List<Object?> get props => [corpusData];
-}
-
-class FailedState extends CorpusState {
-  final BlocException exception;
-
-  const FailedState(this.exception) : super._();
-
-  @override
-  List<Object?> get props => [exception];
+  List<Object?> get props => [data, exception];
 }

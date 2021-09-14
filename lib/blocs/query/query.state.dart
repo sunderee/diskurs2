@@ -1,6 +1,8 @@
 import 'package:diskursv2/api/models/query.model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
+@immutable
 class QueryState extends Equatable {
   final List<QueryModel> data;
   final Exception? exception;
@@ -13,6 +15,7 @@ class QueryState extends Equatable {
   @override
   List<Object?> get props => [data, exception];
 
+  @doNotStore
   QueryState copyWith({
     List<QueryModel>? newData,
     Exception? newException,
