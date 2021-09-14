@@ -1,5 +1,7 @@
 import 'package:diskursv2/api/repositories/language.enum.dart';
 import 'package:diskursv2/blocs/query/query.dart';
+import 'package:diskursv2/ui/widgets/language_picker.widget.dart';
+import 'package:diskursv2/ui/widgets/menu_picker.widget.dart';
 import 'package:diskursv2/utils/constants/color.const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,14 +17,12 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Diskurs'),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.language),
+          LanguagePickerWidget(
+            onLanguagePicked: (LanguageEnum newLanguage) {},
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
-          ),
+          MenuPickerWidget(
+            onMenuItemClickListener: (int menuID) {},
+          )
         ],
       ),
       body: BlocListener<QueryCubit, QueryState>(
